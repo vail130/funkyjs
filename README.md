@@ -1,4 +1,4 @@
-# FuncJS - Functional JavaScript [![Build Status](https://secure.travis-ci.org/vail130/FuncJS.png)](http://travis-ci.org/vail130/FuncJS)
+# funkyjs - Functional JavaScript [![Build Status](https://secure.travis-ci.org/vail130/funkyjs.png)](http://travis-ci.org/vail130/funkyjs)
 
 ## Documentation
 For now, look through the code.
@@ -6,9 +6,10 @@ For now, look through the code.
 ## Examples
 
 ```js
+var F = require('funkyjs');
 var _ = require('underscore');
 
-// FuncJS
+// funkyjs
 var newList = F('map', F('range', 4), F('incr'));
 
 // JavaScript + Underscore
@@ -16,7 +17,7 @@ var newList = _.map([0, 1, 2, 3], function(el) {
   return el += 1;
 });
 
-// FuncJS
+// funkyjs
 var array = (
   F('sortBy',
     F('zip',
@@ -38,7 +39,16 @@ var array = (
     }
   )
 );
+```
 
+Even better...
+```coffee
+# funkyjs + CoffeeScript
+array = (
+  (F 'sortBy',
+    (F 'zip',
+      (F 'shuffle', (F 'range', 62)),
+      (F 'shuffle', (F 'range', 62))), (F 'sum-array')))
 ```
 
 ## Contributing

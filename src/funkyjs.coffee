@@ -328,16 +328,16 @@ methods =
       when 0 then methods['sum-array']
       else methods['sum'].apply @, list
   
-FJS = ->
+funkyjs = ->
   __args = _.toArray arguments
   if __args[0] and methods.hasOwnProperty __args[0]
     methods[__args[0]].apply @, _.rest __args, 1
 
-# Modelled after Underscore.js export
+# Modeled after Underscore.js export
 root = @
 if typeof exports isnt 'undefined'
   if typeof module isnt 'undefined' and module.exports
-    exports = module.exports = FJS
-  exports.FJS = FJS
+    exports = module.exports = funkyjs
+  exports.funkyjs = funkyjs
 else
-  root.FJS = FJS
+  root.funkyjs = funkyjs

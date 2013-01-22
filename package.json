@@ -1,8 +1,8 @@
 {
-  "name": "funcjs",
+  "name": "funkyjs",
   "description": "Functional JavaScript",
   "version": "0.1.0",
-  "homepage": "https://github.com/vail130/FuncJS",
+  "homepage": "https://github.com/vail130/funkyjs",
   "author": {
     "name": "Vail Gold",
     "email": "vail@vailgold.com",
@@ -10,18 +10,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/vail130/FuncJS.git"
+    "url": "git://github.com/vail130/funkyjs.git"
   },
   "bugs": {
-    "url": "https://github.com/vail130/FuncJS/issues"
+    "url": "https://github.com/vail130/funkyjs/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/vail130/FuncJS/blob/master/LICENSE-MIT"
+      "url": "https://github.com/vail130/funkyjs/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/FuncJS",
+  "main": "lib/funkyjs",
   "engines": {
     "node": ">= 0.6.0"
   },

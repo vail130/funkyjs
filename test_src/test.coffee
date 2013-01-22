@@ -1,5 +1,5 @@
 expect = require('chai').expect
-F = require('../lib/FuncJS').FuncJS
+F = require('../lib/funkyjs')
 
 describe 'F', ->
   it 'should be a function', ->
@@ -60,11 +60,10 @@ describe 'F("incr")', ->
 describe 'Composite - Map, Range, Increment', ->
   it 'should return ', ->
     array = (
-      F('sortBy',
-        F('zip',
-          F('shuffle', F('range', 62)),
-          F('shuffle', F('range', 62))), F('sum-array'))
-    )
+      (F 'sortBy',
+        (F 'zip',
+          (F 'shuffle', (F 'range', 62)),
+          (F 'shuffle', (F 'range', 62))), (F 'sum-array')))
     
     expect(array).to.be.a('Array').and.to.have.length 62
     expect(array[0]).to.be.a('Array').and.to.have.length 2

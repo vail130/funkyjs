@@ -2,7 +2,7 @@ var F, expect;
 
 expect = require('chai').expect;
 
-F = require('../lib/FuncJS').FuncJS;
+F = require('../lib/funkyjs');
 
 describe('F', function() {
   return it('should be a function', function() {
