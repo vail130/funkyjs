@@ -1,0 +1,47 @@
+{
+  "name": "FJS",
+  "description": "Functional JavaScript",
+  "version": "0.1.0",
+  "homepage": "https://github.com/vail130/FJS",
+  "author": {
+    "name": "Vail Gold",
+    "email": "vail@vailgold.com",
+    "url": "http://vailgold.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vail130/FJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vail130/FJS/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/vail130/FJS/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/FJS",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "mocha": "*",
+    "chai": "*",
+    "grunt": "*",
+    "grunt-coffee": "*",
+    "grunt-simple-mocha": "*"
+  },
+  "keywords": [
+    "functional programming",
+    "toolkit",
+    "functional underscore"
+  ]
+}
