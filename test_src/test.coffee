@@ -67,5 +67,5 @@ describe 'Composite - Map, Range, Increment', ->
     
     expect(array).to.be.a('Array').and.to.have.length 62
     expect(array[0]).to.be.a('Array').and.to.have.length 2
-    expect(array[0][0] + array[0][1]).to.be.below array[1][0] + array[1][1]
+    expect(array[0][0] + array[0][1]).to.be.most array[1][0] + array[1][1]
 

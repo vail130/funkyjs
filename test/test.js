@@ -94,6 +94,6 @@ describe('Composite - Map, Range, Increment', function() {
     array = F('sortBy', F('zip', F('shuffle', F('range', 62)), F('shuffle', F('range', 62))), F('sum-array'));
     expect(array).to.be.a('Array').and.to.have.length(62);
     expect(array[0]).to.be.a('Array').and.to.have.length(2);
-    return expect(array[0][0] + array[0][1]).to.be.below(array[1][0] + array[1][1]);
+    return expect(array[0][0] + array[0][1]).to.be.most(array[1][0] + array[1][1]);
   });
 });
