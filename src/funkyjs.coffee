@@ -6,37 +6,41 @@ methods =
   #  Collection Functions (Arrays or Objects)
   #
   
+  # Curry with just list param
   'each': (list, iterator, context) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['each']
-      when 1 then (op, ctx) -> _.each list, op, ctx
+      when 1 then (it, ctx) -> _.each list, it, ctx
       when 2 then _.each list, iterator
       else _.each list, iterator, context
   
+  # Curry with just list param
   'map': (list, iterator, context) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['map']
-      when 1 then (op, ctx) -> _.map list, op, ctx
+      when 1 then (it, ctx) -> _.map list, it, ctx
       when 2 then _.map list, iterator
       else _.map list, iterator, context
   
+  # Curry with just list param
   'reduce': (list, iterator, memo, context) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['reduce']
       when 1 then (it, m, ctx) -> _.reduce list, it, m, ctx
-      when 2 then (m, ctx) -> _.reduce list, iterator, m, ctx
+      when 2 then _.reduce list, iterator, 0
       when 3 then _.reduce list, iterator, memo
       else _.reduce list, iterator, memo, context
   
+  # Curry with just list param
   'reduceRight': (list, iterator, memo, context) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['reduceRight']
       when 1 then (it, m, ctx) -> _.reduceRightight list, it, m, ctx
-      when 2 then (m, ctx) -> _.reduceRightight list, iterator, m, ctx
+      when 2 then _.reduceRightight list, iterator, 0
       when 3 then _.reduceRightight list, iterator, memo
       else _.reduceRightight list, iterator, memo, context
   
@@ -44,7 +48,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['find']
-      when 1 then (op, ctx) -> _.find list, op, ctx
+      when 1 then (it, ctx) -> _.find list, it, ctx
       when 2 then _.find list, iterator
       else _.find list, iterator, context
   
@@ -52,7 +56,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['filter']
-      when 1 then (op, ctx) -> _.filter list, op, ctx
+      when 1 then (it, ctx) -> _.filter list, it, ctx
       when 2 then _.filter list, iterator
       else _.filter list, iterator, context
   
@@ -67,7 +71,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['reject']
-      when 1 then (op, ctx) -> _.reject list, op, ctx
+      when 1 then (it, ctx) -> _.reject list, it, ctx
       when 2 then _.reject list, iterator
       else _.reject list, iterator, context
   
@@ -75,7 +79,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['every']
-      when 1 then (op, ctx) -> _.every list, op, ctx
+      when 1 then (it, ctx) -> _.every list, it, ctx
       when 2 then _.every list, iterator
       else _.every list, iterator, context
   
@@ -83,7 +87,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['some']
-      when 1 then (op, ctx) -> _.some list, op, ctx
+      when 1 then (it, ctx) -> _.some list, it, ctx
       when 2 then _.some list, iterator
       else _.some list, iterator, context
   
@@ -327,6 +331,35 @@ methods =
     switch args.length
       when 0 then methods['sum-array']
       else methods['sum'].apply @, list
+  
+  'mult': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['mult']
+      else _.reduce args, ((memo, el) -> memo * el), 0
+  
+  'mult-array': (list) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['mult-array']
+      else methods['mult'].apply @, list
+  
+  'generic': (func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['generic']
+      else func.apply @, _.rest args, 1
+  
+  'if-else': (condition, positive, negative) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['if-else']
+      when 1
+        (pos, neg) -> if condition then pos else neg
+      when 2
+        positive if condition
+      else
+        if condition then positive else negative
   
 funkyjs = ->
   __args = _.toArray arguments

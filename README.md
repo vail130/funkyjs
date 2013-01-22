@@ -13,7 +13,7 @@ var _ = require('underscore');
 var newList = F('map', F('range', 4), F('incr'));
 
 // JavaScript + Underscore
-var newList = _.map([0, 1, 2, 3], function(el) {
+var newList = _.map(_.range(4), function(el) {
   return el += 1;
 });
 
