@@ -1,5 +1,5 @@
 expect = require('chai').expect
-F = require('../lib/fjs').FJS
+F = require('../lib/FuncJS').FuncJS
 
 describe 'F', ->
   it 'should be a function', ->

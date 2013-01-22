@@ -1,4 +1,4 @@
-# FJS - Functional JavaScript [![Build Status](https://secure.travis-ci.org/vail130/FJS.png)](http://travis-ci.org/vail130/FJS)
+# FuncJS - Functional JavaScript [![Build Status](https://secure.travis-ci.org/vail130/FuncJS.png)](http://travis-ci.org/vail130/FuncJS)
 
 ## Documentation
 For now, look through the code.
@@ -8,7 +8,7 @@ For now, look through the code.
 ```js
 var _ = require('underscore');
 
-// FJS
+// FuncJS
 var newList = F('map', F('range', 4), F('incr'));
 
 // JavaScript + Underscore
@@ -16,7 +16,7 @@ var newList = _.map([0, 1, 2, 3], function(el) {
   return el += 1;
 });
 
-// FJS
+// FuncJS
 var array = (
   F('sortBy',
     F('zip',
