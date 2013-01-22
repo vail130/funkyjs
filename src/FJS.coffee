@@ -328,7 +328,7 @@ methods =
       when 0 then methods['sum-array']
       else methods['sum'].apply @, list
   
-FJS = () ->
+FJS = ->
   __args = _.toArray arguments
   if __args[0] and methods.hasOwnProperty __args[0]
     methods[__args[0]].apply @, _.rest __args, 1
