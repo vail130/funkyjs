@@ -646,8 +646,14 @@ methods =
       when 0 then methods['while']
       when 1 then (fn) -> while not condition then fn()
       else (while not condition then func())
-    
   
+  # (F 'switch', input, [test, function], [test, function])
+  'switch': (input) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['switch']
+      else (for arg in _.rest args, 1
+        _arg() for _arg in _.rest arg, 1 if arg[0] is input)
   
   
 funkyjs = ->
