@@ -302,6 +302,255 @@ methods =
       when 1 then (obj) -> _.bind func, obj
       else _.bind.apply @, _.union [func, obj], _.rest args, 2
   
+  'bindAll': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['bindAll']
+      else _.bindAll.apply @, _.union object, _.rest args, 1
+  
+  'memoize': (func, hashFunc) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['memoize']
+      else _.memoize.apply @, _.union func, _.rest args, 1
+  
+  'delay': (func, wait) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['delay']
+      when 1 then (wt) -> _.delay.apply @, _.union [func, wt], _.rest _.toArray(arguments), 1
+      else _.delay.apply @, _.union [func, wait], _.rest _.toArray(arguments), 2
+  
+  'defer': (func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['defer']
+      else _.defer.apply @, _.union [func], _.rest _.toArray(arguments), 1
+  
+  'throttle': (func, wait) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['throttle']
+      when 1 then (wt) -> _.throttle func, wt
+      else _.throttle func, wait
+  
+  'debounce': (func, wait, immediate) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['debounce']
+      when 1 then (wt, immed) -> _.debounce func, wt, immed
+      else _.debounce func, wait, immediate
+  
+  'once': (func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['once']
+      else _.once func
+  
+  'after': (count, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['after']
+      when 1 then (fn) -> _.after count, fn
+      else _.after count, func
+  
+  'wrap': (func, wrapper) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['wrap']
+      when 1 then (wrap) -> _.wrap func, wrap
+      else _.wrap func, wrapper
+  
+  'compose': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['compose']
+      else _.compose.apply @, args
+    
+  #
+  # Object Functions
+  #
+  
+  'keys': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['keys']
+      else _.keys object
+  
+  'values': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['values']
+      else _.values object
+  
+  'pairs': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['pairs']
+      else _.pairs object
+  
+  'invert': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['invert']
+      else _.invert object
+  
+  'functions': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['functions']
+      else _.functions object
+  
+  'extend': (destination) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['extend']
+      when 1 then -> _.extend.apply @, _.union [destination], _.toArray arguments
+      else _.extend.apply @, _.union [destination], _.rest args, 1
+  
+  'pick': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['pick']
+      when 1 then -> _.pick.apply @, _.union [object], _.toArray arguments
+      else _.pick.apply @, _.union [object], _.rest args, 1
+  
+  'omit': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['omit']
+      when 1 then -> _.omit.apply @, _.union [object], _.toArray arguments
+      else _.omit.apply @, _.union [object], _.rest args, 1
+  
+  'defaults': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['defaults']
+      when 1 then -> _.defaults.apply @, _.union [object], _.toArray arguments
+      else _.defaults.apply @, _.union [object], _.rest args, 1
+  
+  'clone': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['clone']
+      else _.clone object
+  
+  'tap': (object, interceptor) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['tap']
+      when 1 then (inter) -> _.tap object, inter
+      else _.tap object, interceptor
+  
+  'has': (object, key) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['has']
+      when 1 then (k) -> _.has object, k
+      else _.has object, key
+  
+  'isEqual': (object, other) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isEqual']
+      when 1 then (oth) -> _.isEqual object, oth
+      else _.isEqual object, other
+  
+  'isEmpty': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isEmpty']
+      else _.isEmpty object
+  
+  'isElement': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isElement']
+      else _.isElement object
+  
+  'isArray': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isArray']
+      else _.isArray object
+  
+  'isObject': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isObject']
+      else _.isObject object
+  
+  'isArguments': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isArguments']
+      else _.isArguments object
+  
+  'isFunction': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isFunction']
+      else _.isFunction object
+  
+  'isString': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isString']
+      else _.isString object
+  
+  'isNumber': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isNumber']
+      else _.isNumber object
+  
+  'isFinite': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isFinite']
+      else _.isFinite object
+  
+  'isBoolean': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isBoolean']
+      else _.isBoolean object
+  
+  'isDate': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isDate']
+      else _.isDate object
+  
+  'isRegExp': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isRegExp']
+      else _.isRegExp object
+  
+  'isNaN': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isNaN']
+      else _.isNaN object
+  
+  'isNull': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isNull']
+      else _.isNull object
+  
+  'isUndefined': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isUndefined']
+      else _.isUndefined object
+  
+  #
+  # Utility Functions
+  #
+  
+  
   
   #
   # Helper Functions
@@ -350,16 +599,56 @@ methods =
       when 0 then methods['generic']
       else func.apply @, _.rest args, 1
   
+  #
+  # Control flow functions
+  #
+  
+  'if-then': (condition, positive) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['if-then']
+      when 1 then (pos) -> if condition then pos
+      else (positive if condition)
+  
   'if-else': (condition, positive, negative) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['if-else']
-      when 1
-        (pos, neg) -> if condition then pos else neg
-      when 2
-        positive if condition
-      else
-        if condition then positive else negative
+      when 1 then (pos, neg) -> (if condition then pos else neg)
+      when 2 then (neg) -> (if condition then positive else neg)
+      else (if condition then positive else negative)
+  
+  'while': (condition, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['while']
+      when 1 then (fn) -> while condition then fn()
+      else (while condition then func())
+  
+  'unless-then': (condition, positive) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['unless-then']
+      when 1 then (pos) -> unless condition then pos
+      else (positive unless condition)
+  
+  'unless-else': (condition, positive, negative) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['unless-else']
+      when 1 then (pos, neg) -> (unless condition then pos else neg)
+      when 2 then (neg) -> (unless condition then positive else neg)
+      else (unless condition then positive else negative)
+  
+  'until': (condition, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['while']
+      when 1 then (fn) -> while not condition then fn()
+      else (while not condition then func())
+    
+  
+  
   
 funkyjs = ->
   __args = _.toArray arguments

@@ -57,8 +57,8 @@ describe 'F("incr")', ->
     expect(incr 5).to.equal 6
     expect(incr true).to.equal 2
 
-describe 'Composite - Map, Range, Increment', ->
-  it 'should return ', ->
+describe 'Composite - SortBy, Zip, Shuffle, Range, Sum-Array', ->
+  it 'should return zipped random arrays sorted by sum of elements', ->
     array = (
       (F 'sortBy',
         (F 'zip',
@@ -67,5 +67,5 @@ describe 'Composite - Map, Range, Increment', ->
     
     expect(array).to.be.a('Array').and.to.have.length 62
     expect(array[0]).to.be.a('Array').and.to.have.length 2
-    expect(array[0][0] + array[0][1]).to.be.below array[1][0] + array[1][1]
+    expect(array[0][0] + array[0][1]).to.be.most array[1][0] + array[1][1]
 
