@@ -10,90 +10,114 @@ describe('F', function() {
   });
 });
 
-describe('F("map", iterable, operator)', function() {
-  return it('should return a new list with operator applied to each element of iterable', function() {
-    var it, map, op;
-    it = [0, 1, 2, 3];
-    op = function(el) {
-      return ++el;
-    };
-    map = F('map', it, op);
-    expect(map).to.be.a('Array').and.have.length(4);
-    return expect(map[0]).to.equal(1);
+describe('F(function, *arg1)', function() {
+  return it('should return a function that gets applied with original arguments', function() {
+    var func, result, result2;
+    func = F((function(a) {
+      return a + 1;
+    }), 8);
+    (expect(func)).to.be.a('Function');
+    result = func();
+    (expect(result)).to.equal(9);
+    result2 = func(2);
+    return (expect(result2)).to.equal(9);
   });
 });
 
-describe('F("map", iterable)', function() {
-  return it('should return a new function taking an operator argument', function() {
-    var map, op;
-    map = F('map', [0, 1, 2, 3]);
-    op = function(el) {
-      return ++el;
-    };
-    expect(map).to.be.a('Function');
-    expect(map(op)).to.be.a('Array').and.have.length(4);
-    return expect(map(op)[0]).to.equal(1);
+describe('F(function)', function() {
+  return it('should return a function that gets applied with current arguments', function() {
+    var func, result;
+    func = F((function(a) {
+      return a + 1;
+    }));
+    (expect(func)).to.be.a('Function');
+    result = func(2);
+    return (expect(result)).to.equal(3);
   });
 });
 
-describe('F("range", start, end, step)', function() {
-  return it('should return a list created from arguments', function() {
-    var range;
-    range = F('range', 0, 5, 2);
-    expect(range).to.be.a('Array').and.have.length(3);
-    expect(range[0]).to.equal(0);
-    expect(range[1]).to.equal(2);
-    return expect(range[2]).to.equal(4);
+describe('Method templates for 3 required arguments with ' + '1, 2, and 3 arguments', function() {});
+
+describe('reduce(list, iterator, memo, [context])', function() {
+  return it('should return the sum of all elements', function() {
+    var result;
+    result = F('reduce', [0, 1, 2, 3], (function(m, a) {
+      return a + m;
+    }), 0);
+    return (expect(result)).to.equal(6);
   });
 });
 
-describe('F("range", start, end)', function() {
-  return it('should return a list created from arguments', function() {
-    var range;
-    range = F('range', 0, 5);
-    expect(range).to.be.a('Array').and.have.length(5);
-    return expect(range[2]).to.equal(2);
+describe('reduce(list, iterator)', function() {
+  return it('should return a function requiring memo to complete', function() {
+    var reduce, result;
+    reduce = F('reduce', [0, 1, 2, 3], (function(m, a) {
+      return a + m;
+    }));
+    (expect(reduce)).to.be.a('Function');
+    result = reduce(0);
+    return (expect(result)).to.equal(6);
   });
 });
 
-describe('F("range", end)', function() {
-  return it('should return a list created from arguments', function() {
-    var range;
-    range = F('range', 3);
-    expect(range).to.be.a('Array').and.have.length(3);
-    return expect(range[1]).to.equal(1);
+describe('reduce(list)', function() {
+  return it('should return a function requiring iterator and memo to complete', function() {
+    var reduce, result;
+    reduce = F('reduce', [0, 1, 2, 3]);
+    (expect(reduce)).to.be.a('Function');
+    result = reduce((function(m, a) {
+      return a + m;
+    }), 0);
+    return (expect(result)).to.equal(6);
   });
 });
 
-describe('F("incr", element, step)', function() {
-  return it('should return a new element that has been incremented by step', function() {
-    expect(F('incr', 5, -3)).to.equal(2);
-    return expect(F('incr', true, 1)).to.equal(2);
+describe('Method templates for 2 required arguments with 1 and 2 arguments', function() {
+  describe('map(list, iterator)', function() {
+    return it('should return a list with new elements', function() {
+      var el, i, result, _i, _len, _results;
+      result = F('map', [0, 1, 2, 3], (function(a) {
+        return a + 1;
+      }));
+      (expect(result)).to.be.a('Array');
+      _results = [];
+      for (i = _i = 0, _len = result.length; _i < _len; i = ++_i) {
+        el = result[i];
+        _results.push((expect(el)).to.equal(i + 1));
+      }
+      return _results;
+    });
+  });
+  return describe('map(list)', function() {
+    return it('should return a function requiring iterator to complete', function() {
+      var el, i, map, result, _i, _len, _results;
+      map = F('map', [0, 1, 2, 3]);
+      (expect(map)).to.be.a('Function');
+      result = map((function(a) {
+        return a + 1;
+      }));
+      _results = [];
+      for (i = _i = 0, _len = result.length; _i < _len; i = ++_i) {
+        el = result[i];
+        _results.push((expect(el)).to.equal(i + 1));
+      }
+      return _results;
+    });
   });
 });
 
-describe('F("incr", element)', function() {
-  return it('should return a new element that has been incremented by 1', function() {
-    expect(F('incr', 5)).to.equal(6);
-    return expect(F('incr', true)).to.equal(2);
+describe('Method templates for 1 required argument with 1 argument', function() {
+  return describe('shuffle(list)', function() {
+    return it('should return a list with shuffled elements', function() {
+      var result;
+      result = F('size', [0, 1, 2, 3]);
+      return (expect(result)).to.equal(4);
+    });
   });
 });
 
-describe('F("incr")', function() {
-  return it('should return a reference to the "incr" function', function() {
-    var incr;
-    incr = F('incr');
-    expect(incr(5)).to.equal(6);
-    return expect(incr(true)).to.equal(2);
-  });
-});
-
-describe('Composite - SortBy, Zip, Shuffle, Range, Sum-Array', function() {
-  return it('should return zipped random arrays sorted by sum of elements', function() {
-    var array;
-    array = F('sortBy', F('zip', F('shuffle', F('range', 62)), F('shuffle', F('range', 62))), F('sum-array'));
-    expect(array).to.be.a('Array').and.to.have.length(62);
-    expect(array[0]).to.be.a('Array').and.to.have.length(2);
-    return expect(array[0][0] + array[0][1]).to.be.most(array[1][0] + array[1][1]);
+describe('Custom functions', function() {
+  return describe('incr()', function() {
+    return it('should ', function() {});
   });
 });
