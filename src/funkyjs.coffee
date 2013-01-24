@@ -45,51 +45,91 @@ methods =
       else func.apply @, _.rest args, 1
   
   #
+  # Object functions
+  #
+  
+  'un-pair': (list) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['un-pair']
+      else (
+        obj = {}
+        obj[item[0]] = item[1] for item in list
+      )
+  
+  
+  #
   # Control flow functions
   #
+  
+  'is': (value1, value2) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['is']
+      when 1 then (val2) -> methods['is'] value1, val2
+      else value1 is value2
+  
+  'isnt': (value1, value2) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['isnt']
+      when 1 then (val2) -> methods['isnt'] value1, val2
+      else value1 isnt value2
+  
+  'and': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['and']
+      else _.size(args) isnt _.size _.reject args, (arg) -> not arg
+  
+  'or': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['and']
+      else _.size _.reject(args, (arg) -> not arg) isnt 0
   
   'if-then': (condition, positive) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['if-then']
-      when 1 then (pos) -> if condition then pos
+      when 1 then (pos) -> methods['if-then'] condition, pos
       else (positive if condition)
   
   'if-else': (condition, positive, negative) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['if-else']
-      when 1 then (pos, neg) -> (if condition then pos else neg)
-      when 2 then (neg) -> (if condition then positive else neg)
+      when 1 then (pos, neg) -> methods['if-else'] condition, pos, neg
+      when 2 then (neg) -> methods['if-else'] condition, positive, neg
       else (if condition then positive else negative)
   
   'while': (condition, func) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['while']
-      when 1 then (fn) -> while condition then fn()
+      when 1 then (fn) -> methods['while'] condition, fn
       else (while condition then func())
   
   'unless-then': (condition, positive) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['unless-then']
-      when 1 then (pos) -> unless condition then pos
+      when 1 then (pos) -> methods['unless-then'] condition, pos
       else (positive unless condition)
   
   'unless-else': (condition, positive, negative) ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['unless-else']
-      when 1 then (pos, neg) -> (unless condition then pos else neg)
-      when 2 then (neg) -> (unless condition then positive else neg)
+      when 1 then (pos, neg) -> methods['unless-else'] condition, pos, neg
+      when 2 then (neg) -> methods['unless-else'] condition, positive, neg
       else (unless condition then positive else negative)
   
   'until': (condition, func) ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['while']
-      when 1 then (fn) -> while not condition then fn()
+      when 0 then methods['until']
+      when 1 then (fn) -> methods['until'] condition, fn
       else (while not condition then func())
   
   # (F 'switch', input, [test, function], [test, function])
@@ -101,6 +141,14 @@ methods =
         for arg in _.rest args, 1
           if arg[0] is input
             return arg[1]()
+  
+  'let': (list, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['let']
+      when 1 then (fn) -> methods['let'] list, fn
+      else func.apply @, list
+    
 
 setupMethods = (LIB, one, two, three) ->
   # 3 required args
