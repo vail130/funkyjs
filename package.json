@@ -29,7 +29,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "underscore": "*"
+    "underscore": "*",
+    "underscore.string": "*"
   },
   "devDependencies": {
     "coffee-script": "*",

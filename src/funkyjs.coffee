@@ -1,4 +1,5 @@
 _ = require 'underscore'
+_.str = require 'underscore.string'
 
 methods =
   
@@ -550,17 +551,86 @@ methods =
   # Utility Functions
   #
   
+  'identity': (object) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['identity']
+      else _.identity object
+  
+  'times': (n, iterator, context) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['times']
+      when 1 then (it, ctx) -> _.times n, it, ctx
+      else _.times n, iterator, context
+  
+  'random': (min, max) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['random']
+      when 1 then _.random min #Here, min is actually max
+      else _.random min, max
+  
+  'escape': (string) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['escape']
+      else _.escape string
+  
+  'unescape': (string) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['unescape']
+      else _.unescape string
+  
+  'result': (object, property) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['result']
+      when 1 then (prop) -> _.result object, prop
+      else _.result object, property
+  
+  'template': (templateString, data, settings) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['template']
+      else _.template templateString, data, settings
+  
+  #
+  # String functions
+  #
+  
+  'numberFormat': (number, decimals, decimalSeparator, orderSeparator) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['numberFormat']
+      else _.str.numberFormat number, decimals,
+        decimalSeparator, orderSeparator
+  
+  'levenshtein': (string1, string2) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['levenshtein']
+      when 1 then (str2) -> _.str.levenshtein string1, str2
+      else _.str.levenshtein string1, string2
+  
+  'capitalize': (string) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['capitalize']
+      else _.str.capitalize string
+  
+  'chop': (string, step) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['chop']
+      when 1 then (st) -> _.str.chop string, st
+      else _.str.chop string, step
   
   
   #
   # Helper Functions
   #
-  
-  'self': (elem) ->
-    args = _.toArray arguments
-    switch args.length
-      when 0 then methods['self']
-      else elem
   
   'incr': (elem, step) ->
     args = _.toArray arguments
@@ -652,8 +722,10 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['switch']
-      else (for arg in _.rest args, 1
-        _arg() for _arg in _.rest arg, 1 if arg[0] is input)
+      else
+        for arg in _.rest args, 1
+          if arg[0] is input
+            return arg[1]()
   
   
 funkyjs = ->
