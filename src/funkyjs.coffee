@@ -4,7 +4,7 @@ _.str = require 'underscore.string'
 methods =
   
   #
-  # Helper Functions
+  # Math Functions
   #
   
   'incr': (elem, step) ->
@@ -30,7 +30,7 @@ methods =
     args = _.toArray arguments
     switch args.length
       when 0 then methods['mult']
-      else _.reduce args, ((memo, el) -> memo * el), 0
+      else _.reduce args, ((memo, el) -> memo * el), 1
   
   'mult-array': (list) ->
     args = _.toArray arguments
@@ -38,25 +38,56 @@ methods =
       when 0 then methods['mult-array']
       else methods['mult'].apply @, list
   
-  'generic': (func) ->
-    args = _.toArray arguments
-    switch args.length
-      when 0 then methods['generic']
-      else func.apply @, _.rest args, 1
-  
   #
   # Object functions
   #
   
-  'un-pair': (list) ->
+  'unpair': (list) ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['un-pair']
+      when 0 then methods['unpair']
       else (
-        obj = {}
-        obj[item[0]] = item[1] for item in list
+        object = {}
+        object[item[0]] = item[1] for item in list
+        object
       )
   
+  'object-surgery': (object, key, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['object-surgery']
+      when 1 then (k, fn) -> methods['object-surgery'] object, k, fn
+      when 2 then (fn) -> methods['object-surgery'] object, key, fn
+      else
+        object[key] = func object[key]
+        object
+  
+  #
+  # Array functions
+  #
+  
+  'array-surgery': (list, index, func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['array-surgery']
+      when 1 then (idx, fn) -> methods['array-surgery'] list, idx, fn
+      when 2 then (fn) -> methods['array-surgery'] list, index, fn
+      else
+        list[index] = func list[index]
+        list
+    
+  #
+  # Conversion functions
+  #
+  
+  'strToBool': (string) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['strToBool']
+      else (if string is 'false' then false else (
+        if string is 'true' then true else string
+      ))
+    
   
   #
   # Control flow functions
@@ -85,8 +116,14 @@ methods =
   'or': ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['and']
+      when 0 then methods['or']
       else _.size _.reject(args, (arg) -> not arg) isnt 0
+  
+  'xor': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['xor']
+      else _.size _.reject(args, (arg) -> not arg) not in [0, _.size args]
   
   'if-then': (condition, positive) ->
     args = _.toArray arguments
@@ -148,7 +185,18 @@ methods =
       when 0 then methods['let']
       when 1 then (fn) -> methods['let'] list, fn
       else func.apply @, list
-    
+  
+  #
+  # Utility functions
+  #
+  
+  'generic': (func) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['generic']
+      else func.apply @, _.rest args, 1
+  
+
 
 setupMethods = (LIB, one, two, three) ->
   # 3 required args

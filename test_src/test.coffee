@@ -1,5 +1,6 @@
 expect = require('chai').expect
-F = require('../lib/funkyjs')
+F = require '../lib/funkyjs'
+_ = require 'underscore'
 
 describe 'F', ->
   it 'should be a function', ->
@@ -63,8 +64,96 @@ describe 'Method templates for 1 required argument with 1 argument', ->
       result = (F 'size', [0, 1, 2, 3])
       (expect result).to.equal 4
 
-describe 'Custom functions', ->
+describe 'Math functions', ->
+  
+  describe 'incr(elem, step)', ->
+    it 'should return the element incremented by step', ->
+      expect(F 'incr', 1, 3).to.equal 4
+  
+  describe 'incr(elem)', ->
+    it 'should return the element incremented by 1', ->
+      expect(F 'incr', 8).to.equal 9
   
   describe 'incr()', ->
-    it 'should ', ->
-      
+    it 'should return itself as a callable', ->
+      incr = F 'incr'
+      expect(incr 1, 3).to.equal 4
+      expect(incr 8).to.equal 9
+  
+  describe 'sum(*args)', ->
+    it 'should return the sum of the arguments', ->
+      expect(F 'sum', 1, 3, 8, 34).to.equal 46
+  
+  describe 'sum()', ->
+    it 'should return itself as a callable', ->
+      sum = F 'sum'
+      expect(sum 1, 3, 8, 34).to.equal 46
+  
+  describe 'sum-array(list)', ->
+    it 'should return the sum of the list elements', ->
+      expect(F 'sum-array', [1, 3, 8, 34]).to.equal 46
+  
+  describe 'sum-array()', ->
+    it 'should return itself as a callable', ->
+      sumArray = F 'sum-array'
+      expect(sumArray [1, 3, 8, 34]).to.equal 46
+  
+  describe 'mult(*args)', ->
+    it 'should return the product of the arguments', ->
+      expect(F 'mult', 1, 3, 8, 34).to.equal 3*8*34
+  
+  describe 'mult()', ->
+    it 'should return itself as a callable', ->
+      mult = F 'mult'
+      expect(mult 1, 3, 8, 34).to.equal 3*8*34
+  
+  describe 'mult-array(list)', ->
+    it 'should return the product of the list elements', ->
+      expect(F 'mult-array', [1, 3, 8, 34]).to.equal 3*8*34
+  
+  describe 'mult-array()', ->
+    it 'should return itself as a callable', ->
+      multArray = F 'mult-array'
+      expect(multArray [1, 3, 8, 34]).to.equal 3*8*34
+
+describe 'Object functions', ->
+  
+  describe 'unpair(array)', ->
+    it 'should return an object with key value pairs based on arrays of two ' +
+    'values from the input array', ->
+      object = (F 'unpair', [['a', 1], ['b', 2]])
+      expect(object.a).to.equal 1
+      expect(object.b).to.equal 2
+  
+  describe 'object-surgery(object, key, func)', ->
+    it 'should return an object with value at key run through func', ->
+      object = {a: 1, b: 2}
+      obj = (F 'object-surgery', object, 'a', F('incr'))
+      expect(object.a).to.equal 2
+      expect(obj.a).to.equal 2
+  
+  describe 'object-surgery(object, key)', ->
+    it 'should return a function taking func as argument to complete', ->
+      object = {a: 1, b: 2}
+      objSurg = (F 'object-surgery', object, 'a')
+      obj = objSurg F('incr')
+      expect(object.a).to.equal 2
+      expect(obj.a).to.equal 2
+  
+  describe 'object-surgery(object)', ->
+    it 'should return a function taking key and func as argument to complete', ->
+      object = {a: 1, b: 2}
+      objSurg = (F 'object-surgery', object)
+      obj = objSurg 'a', F('incr')
+      expect(object.a).to.equal 2
+      expect(obj.a).to.equal 2
+  
+  describe 'object-surgery()', ->
+    it 'should return itself as callable', ->
+      object = {a: 1, b: 2}
+      objSurg = (F 'object-surgery')
+      obj = objSurg object, 'a', F('incr')
+      expect(object.a).to.equal 2
+      expect(obj.a).to.equal 2
+
+

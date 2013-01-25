@@ -1,8 +1,10 @@
-var F, expect;
+var F, expect, _;
 
 expect = require('chai').expect;
 
 F = require('../lib/funkyjs');
+
+_ = require('underscore');
 
 describe('F', function() {
   return it('should be a function', function() {
@@ -116,8 +118,133 @@ describe('Method templates for 1 required argument with 1 argument', function() 
   });
 });
 
-describe('Custom functions', function() {
-  return describe('incr()', function() {
-    return it('should ', function() {});
+describe('Math functions', function() {
+  describe('incr(elem, step)', function() {
+    return it('should return the element incremented by step', function() {
+      return expect(F('incr', 1, 3)).to.equal(4);
+    });
+  });
+  describe('incr(elem)', function() {
+    return it('should return the element incremented by 1', function() {
+      return expect(F('incr', 8)).to.equal(9);
+    });
+  });
+  describe('incr()', function() {
+    return it('should return itself as a callable', function() {
+      var incr;
+      incr = F('incr');
+      expect(incr(1, 3)).to.equal(4);
+      return expect(incr(8)).to.equal(9);
+    });
+  });
+  describe('sum(*args)', function() {
+    return it('should return the sum of the arguments', function() {
+      return expect(F('sum', 1, 3, 8, 34)).to.equal(46);
+    });
+  });
+  describe('sum()', function() {
+    return it('should return itself as a callable', function() {
+      var sum;
+      sum = F('sum');
+      return expect(sum(1, 3, 8, 34)).to.equal(46);
+    });
+  });
+  describe('sum-array(list)', function() {
+    return it('should return the sum of the list elements', function() {
+      return expect(F('sum-array', [1, 3, 8, 34])).to.equal(46);
+    });
+  });
+  describe('sum-array()', function() {
+    return it('should return itself as a callable', function() {
+      var sumArray;
+      sumArray = F('sum-array');
+      return expect(sumArray([1, 3, 8, 34])).to.equal(46);
+    });
+  });
+  describe('mult(*args)', function() {
+    return it('should return the product of the arguments', function() {
+      return expect(F('mult', 1, 3, 8, 34)).to.equal(3 * 8 * 34);
+    });
+  });
+  describe('mult()', function() {
+    return it('should return itself as a callable', function() {
+      var mult;
+      mult = F('mult');
+      return expect(mult(1, 3, 8, 34)).to.equal(3 * 8 * 34);
+    });
+  });
+  describe('mult-array(list)', function() {
+    return it('should return the product of the list elements', function() {
+      return expect(F('mult-array', [1, 3, 8, 34])).to.equal(3 * 8 * 34);
+    });
+  });
+  return describe('mult-array()', function() {
+    return it('should return itself as a callable', function() {
+      var multArray;
+      multArray = F('mult-array');
+      return expect(multArray([1, 3, 8, 34])).to.equal(3 * 8 * 34);
+    });
+  });
+});
+
+describe('Object functions', function() {
+  describe('unpair(array)', function() {
+    return it('should return an object with key value pairs based on arrays of two ' + 'values from the input array', function() {
+      var object;
+      object = F('unpair', [['a', 1], ['b', 2]]);
+      expect(object.a).to.equal(1);
+      return expect(object.b).to.equal(2);
+    });
+  });
+  describe('object-surgery(object, key, func)', function() {
+    return it('should return an object with value at key run through func', function() {
+      var obj, object;
+      object = {
+        a: 1,
+        b: 2
+      };
+      obj = F('object-surgery', object, 'a', F('incr'));
+      expect(object.a).to.equal(2);
+      return expect(obj.a).to.equal(2);
+    });
+  });
+  describe('object-surgery(object, key)', function() {
+    return it('should return a function taking func as argument to complete', function() {
+      var obj, objSurg, object;
+      object = {
+        a: 1,
+        b: 2
+      };
+      objSurg = F('object-surgery', object, 'a');
+      obj = objSurg(F('incr'));
+      expect(object.a).to.equal(2);
+      return expect(obj.a).to.equal(2);
+    });
+  });
+  describe('object-surgery(object)', function() {
+    return it('should return a function taking key and func as argument to complete', function() {
+      var obj, objSurg, object;
+      object = {
+        a: 1,
+        b: 2
+      };
+      objSurg = F('object-surgery', object);
+      obj = objSurg('a', F('incr'));
+      expect(object.a).to.equal(2);
+      return expect(obj.a).to.equal(2);
+    });
+  });
+  return describe('object-surgery()', function() {
+    return it('should return itself as callable', function() {
+      var obj, objSurg, object;
+      object = {
+        a: 1,
+        b: 2
+      };
+      objSurg = F('object-surgery');
+      obj = objSurg(object, 'a', F('incr'));
+      expect(object.a).to.equal(2);
+      return expect(obj.a).to.equal(2);
+    });
   });
 });
