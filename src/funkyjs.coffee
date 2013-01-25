@@ -48,7 +48,14 @@ methods =
       when 0 then methods['unpair']
       else (
         object = {}
-        object[item[0]] = item[1] for item in list
+        for item in list
+          if object.hasOwnProperty(item[0])
+            if _.isArray object[item[0]]
+              object[item[0]].push item[1]
+            else
+              object[item[0]] = [object[item[0]], item[1]]
+          else
+            object[item[0]] = item[1]
         object
       )
   
@@ -93,6 +100,12 @@ methods =
   # Control flow functions
   #
   
+  'not': (value) ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['not']
+      else not value
+  
   'is': (value1, value2) ->
     args = _.toArray arguments
     switch args.length
@@ -125,49 +138,45 @@ methods =
       when 0 then methods['xor']
       else _.size _.reject(args, (arg) -> not arg) not in [0, _.size args]
   
-  'if-then': (condition, positive) ->
+  # if(positive)
+  # if(positive, negative)
+  # if(condition, positive, negative)
+  'if': ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['if-then']
-      when 1 then (pos) -> methods['if-then'] condition, pos
-      else (positive if condition)
+      when 0 then methods['if']
+      when 1 then (cond) -> methods['if'] cond, args[0]
+      when 2 then (cond) -> methods['if'] cond, args[0], args[1]
+      else (if args[0] then args[1]?() else args[2]?())
   
-  'if-else': (condition, positive, negative) ->
-    args = _.toArray arguments
-    switch args.length
-      when 0 then methods['if-else']
-      when 1 then (pos, neg) -> methods['if-else'] condition, pos, neg
-      when 2 then (neg) -> methods['if-else'] condition, positive, neg
-      else (if condition then positive else negative)
-  
-  'while': (condition, func) ->
+  # while(func)
+  # while(condition, func)
+  'while': ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['while']
-      when 1 then (fn) -> methods['while'] condition, fn
-      else (while condition then func())
+      when 1 then (fn) -> methods['while'] args[0], fn
+      else (while args[0]?() then args[1]?())
   
-  'unless-then': (condition, positive) ->
+  # unless(positive)
+  # unless(positive, negative)
+  # unless(condition, positive, negative)
+  'unless': ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['unless-then']
-      when 1 then (pos) -> methods['unless-then'] condition, pos
-      else (positive unless condition)
+      when 0 then methods['unless']
+      when 1 then (cond) -> methods['unless'] cond, args[0]
+      when 2 then (cond) -> methods['unless'] cond, args[0], args[1]
+      else (unless args[0] then args[1]?() else args[2]?())
   
-  'unless-else': (condition, positive, negative) ->
-    args = _.toArray arguments
-    switch args.length
-      when 0 then methods['unless-else']
-      when 1 then (pos, neg) -> methods['unless-else'] condition, pos, neg
-      when 2 then (neg) -> methods['unless-else'] condition, positive, neg
-      else (unless condition then positive else negative)
-  
-  'until': (condition, func) ->
+  # until(func)
+  # until(condition, func)
+  'until': ->
     args = _.toArray arguments
     switch args.length
       when 0 then methods['until']
-      when 1 then (fn) -> methods['until'] condition, fn
-      else (while not condition then func())
+      when 1 then (fn) -> methods['until'] args[0], fn
+      else (while not args[0]?() then args[1]?())
   
   # (F 'switch', input, [test, function], [test, function])
   'switch': (input) ->
@@ -190,6 +199,20 @@ methods =
       else (
         func = _.last args
         func.apply @, _.initial args if typeof func is 'function'
+      )
+  
+  # Only works with single-argument methods that return updated value
+  'compose': ->
+    args = _.toArray arguments
+    switch args.length
+      when 0 then methods['compose']
+      else (
+        val = _.last args
+        funcs = _.initial(_.rest args, 1)
+        funcs.reverse()
+        for func in funcs
+          val = func val
+        val
       )
   
 
@@ -278,6 +301,8 @@ funkyjs = ->
       -> args[0].apply @, _.rest args, 1
     else
       -> args[0].apply @, _.toArray arguments
+  else
+    _.identity args[0]
 
 # Modeled after Underscore.js export
 root = @
