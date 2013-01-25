@@ -179,22 +179,18 @@ methods =
           if arg[0] is input
             return arg[1]()
   
-  'let': (list, func) ->
-    args = _.toArray arguments
-    switch args.length
-      when 0 then methods['let']
-      when 1 then (fn) -> methods['let'] list, fn
-      else func.apply @, list
-  
   #
   # Utility functions
   #
   
-  'generic': (func) ->
+  'call': ->
     args = _.toArray arguments
     switch args.length
-      when 0 then methods['generic']
-      else func.apply @, _.rest args, 1
+      when 0 then methods['call']
+      else (
+        func = _.last args
+        func.apply @, _.initial args if typeof func is 'function'
+      )
   
 
 
