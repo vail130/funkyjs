@@ -7,8 +7,17 @@ F = require('../lib/funkyjs');
 _ = require('underscore');
 
 describe('F', function() {
-  return it('should be a function', function() {
+  it('should be a function', function() {
     return expect(F).to.be.a('Function');
+  });
+  return it('should return a function that returns any object or array passed in', function() {
+    var result;
+    result = F([]);
+    expect(result).to.be.a('Function');
+    expect(result()).to.be.a('Array');
+    result = F({});
+    expect(result).to.be.a('Function');
+    return expect(result()).to.be.a('Object');
   });
 });
 
@@ -245,6 +254,26 @@ describe('Object functions', function() {
       obj = objSurg(object, 'a', F('incr'));
       expect(object.a).to.equal(2);
       return expect(obj.a).to.equal(2);
+    });
+  });
+});
+
+describe('Control flow functions', function() {
+  return describe('if(condition, positive, negative)', function() {
+    return it('should return the result of calling positive or negative based on condition', function() {
+      var result;
+      result = F('if', true, (function() {
+        return 'a';
+      }), (function() {
+        return 'b';
+      }));
+      expect(result).to.equal('a');
+      result = F('if', false, (function() {
+        return 'a';
+      }), (function() {
+        return 'b';
+      }));
+      return expect(result).to.equal('b');
     });
   });
 });

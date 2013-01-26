@@ -302,7 +302,7 @@ funkyjs = ->
     else
       -> args[0].apply @, _.toArray arguments
   else
-    _.identity args[0]
+    -> args[0]
 
 # Modeled after Underscore.js export
 root = @

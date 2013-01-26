@@ -6,6 +6,15 @@ describe 'F', ->
   it 'should be a function', ->
     expect(F).to.be.a 'Function'
   
+  it 'should return a function that returns any object or array passed in', ->
+    result = (F [])
+    expect(result).to.be.a 'Function'
+    expect(result()).to.be.a 'Array'
+    
+    result = (F {})
+    expect(result).to.be.a 'Function'
+    expect(result()).to.be.a 'Object'
+  
 describe 'F(function, *arg1)', ->
   it 'should return a function that gets applied with original arguments', ->
     func = (F ((a) -> a + 1), 8)
@@ -155,5 +164,15 @@ describe 'Object functions', ->
       obj = objSurg object, 'a', F('incr')
       expect(object.a).to.equal 2
       expect(obj.a).to.equal 2
+
+describe 'Control flow functions', ->
+  
+  describe 'if(condition, positive, negative)', ->
+    it 'should return the result of calling positive or negative based on condition', ->
+      result = (F 'if', true, (-> 'a'), (-> 'b'))
+      expect(result).to.equal 'a'
+      
+      result = (F 'if', false, (-> 'a'), (-> 'b'))
+      expect(result).to.equal 'b'
 
 
